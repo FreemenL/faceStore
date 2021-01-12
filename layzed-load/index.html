@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Lazy-Load</title>
+  <style>
+    .img {
+      display: block;
+      width: 200px;
+      height:200px;
+      background-color: gray;
+      border: 1px solid red;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+     <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+     <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+     <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+    <div class="img">
+      <img class="pic" alt="加载中" data-src="https://user-gold-cdn.xitu.io/2018/10/5/1664360c6ceda200?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    </div>
+  </div>
+  <script>
+    // 获取所有img 元素。
+    const imgs = document.querySelectorAll("img");
+    // 获取适口大小
+    const clientHeight = window.innerHeight|| document.documentElement.clientHeight;
+    // 初始化索引
+    let num = 0;
+    // 懒加载 
+    function lazyLoad () {
+      for(let i=num;i<imgs.length;i++){
+        let distance = clientHeight - imgs[i].getBoundingClientRect().top;
+        const images = document.querySelectorAll("img");
+        if(!images[num].getAttribute("src")&& distance >= 0){
+          images[num].setAttribute("src",images[num].getAttribute('data-src')); 
+          num++;
+        }
+      };
+    };
+
+    const throttle = (fn,interval) => {
+      let isFist = true;
+      let timer;
+      return (...args) => {
+        if(isFist){
+          fn(args);
+          isFist = false;
+          return false;
+        };
+        if(timer){
+          return false;
+        };
+        timer = setTimeout(()=>{
+          clearTimeout(timer);
+          timer = null;
+          console.log('interval', interval);
+          fn(args);
+        },interval||5000);
+      };
+    };
+    // 监听Scroll事件
+    window.addEventListener('scroll', throttle(lazyLoad,5000), false);
+
+    // 实现懒加载的两个关键因素: 
+    // 1. 计算适口
+    // 2. 函数截流
+  
+</script>
+</body>
+</html>
